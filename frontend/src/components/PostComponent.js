@@ -41,7 +41,11 @@ class PostComponent extends Component {
                             <Link to={`/${post.category}/${post.id}/edit`}>Edit</Link> &nbsp;
                             <a>Delete</a>
                         </div>
+                        <div>
+                            <h1>Comments</h1>
+                        </div>
                     </div>
+
                 )}
             </div>
         );

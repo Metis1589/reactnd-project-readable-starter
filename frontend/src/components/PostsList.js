@@ -46,7 +46,7 @@ class PostsList extends Component {
                             <p>Comments: {post.commentCount}</p>
                             <p>
                                 <Link to={`/${post.category}/${post.id}/edit`}>Edit</Link> &nbsp;
-                                <a href="#" onClick={this.handleClick.bind(this, post)}>Delete</a>
+                                <a href="#" onClick={this.handleClick.bind(this, post.id)}>Delete</a>
                             </p>
                         </li>
                     ))}
