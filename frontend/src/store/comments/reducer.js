@@ -1,9 +1,6 @@
-// import Immutable from 'seamless-immutable';
 import * as actionTypes from './actionTypes';
 
-
 const initialState = {
-    list: []
 };
 
 export default (state = initialState, action) => {
@@ -11,32 +8,42 @@ export default (state = initialState, action) => {
         case actionTypes.FETCH_COMMENTS:
             return {
                 ...state,
-                ['list'] : action.payload,
-            }
-        case actionTypes.FETCH_COMMENT:
-            return {
-                ...state,
-                [action.comment.id]: action.comment,
+                [action.post_id] : action.payload,
             }
         case actionTypes.CREATE_COMMENT:
+            let updatedState = state[action.comment.parentId];
+            if(typeof(updatedState) == 'undefined'){
+                updatedState = [];
+            }
+            updatedState.push(action.comment);
             return {
                 ...state,
-                [action.comment.id]: action.comment,
+                [action.comment.parentId] : updatedState
             }
         case actionTypes.UPDATE_COMMENT:
+            console.log('actionTypes.UPDATE_COMMENT', state[action.comment.parentId], action);
             return {
                 ...state,
-                ['list'] : state.list.map(post =>
-                    (post.id === action.comment.id)
+                [action.comment.parentId] : state[action.comment.parentId].map(comment =>
+                    (comment.id === action.comment.id)
                         ? action.comment
-                        : post)
+                        : comment)
             }
-
-            return state.list.map(post =>
-                (post.id === action.comment.id)
-                    ? action.comment
-                    : post
-            )
+        case actionTypes.VOTE_COMMENT:
+            return {
+                ...state,
+                [action.comment.parentId] : state[action.comment.parentId].map(comment =>
+                    (comment.id === action.comment.id)
+                        ? action.comment
+                        : comment)
+            }
+        case actionTypes.DELETE_COMMENT:
+            return {
+                ...state,
+                [action.comment.parentId] : state[action.comment.parentId].filter((comment) => {
+                    return comment.id !== action.comment.id
+                })
+            }
         default:
             return state;
     }

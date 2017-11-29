@@ -73,3 +73,48 @@ export const deletePost = (postId) =>
             console.error(error);
         });
 
+export const getCommentsList = (postId) =>
+    axios.get(`${api}/posts/${postId}/comments`, {'headers' : headers})
+        .then(function (response) {
+            return response.data;
+        })
+        .catch(function (error) {
+            console.error(error);
+        });
+
+export const createComment = (comment) =>
+    axios.post(`${api}/comments`, comment, {'headers' : headers})
+        .then(function (response) {
+            return response.data;
+        })
+        .catch(function (error) {
+            console.error(error);
+        });
+
+export const updateComment = (commentId, comment) =>
+    axios.put(`${api}/comments/${commentId}`, comment, {'headers' : headers})
+        .then(function (response) {
+            return response.data;
+        })
+        .catch(function (error) {
+            console.error(error);
+        });
+
+export const deleteComment = (commentId) =>
+    axios.delete(`${api}/comments/${commentId}`, {'headers' : headers})
+        .then(function (response) {
+            return response.data;
+        })
+        .catch(function (error) {
+            console.error(error);
+        });
+
+export const voteComment = (commentId, voteOption) =>
+    axios.post(`${api}/comments/${commentId}`, {option: voteOption}, {'headers' : headers})
+        .then(function (response) {
+            return response.data;
+        })
+        .catch(function (error) {
+            console.error(error);
+        });
+

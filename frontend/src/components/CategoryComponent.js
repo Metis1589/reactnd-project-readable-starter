@@ -18,7 +18,7 @@ class CategoryComponent extends Component {
         });
         return (
             <div>
-                {category!='post-create' && (
+                {category!='post-create' && category!='add-comment' && (
                     <div className="row">
                         <div className="col-md-4">
                             <CategoriesList categories={categories} />

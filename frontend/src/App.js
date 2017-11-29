@@ -6,6 +6,7 @@ import PostsList from './components/PostsList';
 import PostComponent from './components/PostComponent';
 import CategoryComponent from './components/CategoryComponent';
 import PostEditComponent from './components/PostEditComponent';
+import CommentEditComponent from './components/CommentEditComponent';
 import store from './store';
 import { connect } from 'react-redux';
 import { Provider } from 'react-redux';
@@ -32,9 +33,11 @@ class App extends Component {
             <div className="app">
                 <Route path='/' exact component={HomeComponent} />
                 <Route path='/post-create' exact component={PostEditComponent}/>
+                <Route path={"/post/:post_id/add-comment"} exact component={CommentEditComponent}/>
                 <Route path='/:category' exact component={CategoryComponent}/>
                 <Route path={"/:category/:post_id/"} exact component={PostComponent}/>
                 <Route path={"/:category/:post_id/edit/"} exact component={PostEditComponent}/>
+                <Route path={"/:category/:post_id/:comment/edit/"} exact component={CommentEditComponent}/>
             </div>
         )
     }
