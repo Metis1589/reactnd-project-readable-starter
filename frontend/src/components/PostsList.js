@@ -3,8 +3,18 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as ClientAPI from '../utils/APIClient';
 import * as postsActions from '../store/posts/actions';
+import sortBy from 'sort-by';
 
 class PostsList extends Component {
+
+    state = {
+        orderBy: 'timestamp'
+    }
+
+    handleOrderByClick(orderByField, e) {
+        e.preventDefault();
+        this.setState({orderBy:orderByField});
+    }
 
     handleClick(post_id, e) {
         e.preventDefault();
@@ -30,8 +40,14 @@ class PostsList extends Component {
 
     render() {
         const posts = this.props.posts;
+        posts.sort(sortBy('-' + this.state.orderBy));
         return (
             <div className="jumbotron">
+                <div>
+                    <h5>Order by:</h5>
+                    <a href="" onClick={this.handleOrderByClick.bind(this, 'timestamp')}>datetime</a> &nbsp;
+                    <a href="" onClick={this.handleOrderByClick.bind(this, 'voteScore')}>popularity</a>
+                </div>
                 <p>Posts list</p>
                 <ol className="books-grid">
                     {posts.map((post) => (

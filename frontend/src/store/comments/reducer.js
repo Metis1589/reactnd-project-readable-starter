@@ -21,7 +21,6 @@ export default (state = initialState, action) => {
                 [action.comment.parentId] : updatedState
             }
         case actionTypes.UPDATE_COMMENT:
-            console.log('actionTypes.UPDATE_COMMENT', state[action.comment.parentId], action);
             return {
                 ...state,
                 [action.comment.parentId] : state[action.comment.parentId].map(comment =>
