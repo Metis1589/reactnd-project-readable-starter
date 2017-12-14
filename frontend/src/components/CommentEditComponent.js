@@ -1,11 +1,7 @@
 import React, { Component } from 'react';
-import { Route, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as ClientAPI from '../utils/APIClient';
-import * as commentsActionTypes from '../store/comments/actionTypes';
 import * as commentsActions from '../store/comments/actions';
-import { Link } from 'react-router-dom';
-import { isEqual } from 'lodash';
 import uuid from 'uuid';
 
 class CommentEditComponent extends Component {
@@ -31,7 +27,7 @@ class CommentEditComponent extends Component {
             ClientAPI.updateComment(comment.id, comment)
                 .then(() => {
                     props.updateComment(comment);
-                    props.history.push('/');
+                    props.history.goBack();
                 });
         } else {
             comment.timestamp = Date.now();
@@ -39,7 +35,7 @@ class CommentEditComponent extends Component {
             ClientAPI.createComment(comment)
                 .then((comment) => {
                     props.createComment(comment);
-                    props.history.push('/');
+                    props.history.goBack();
                 });
         }
     }
@@ -49,17 +45,10 @@ class CommentEditComponent extends Component {
         this.setState(Object.assign({}, this.state, {comment}));
     }
 
-    /*
-    componentWillReceiveProps(nextProps) {
-        if (!isEqual(nextProps.post, this.state.post)) {
-            this.setState({...this.state, post: nextProps.post});
-        }
-    }
-    */
-
     componentDidMount() {
-        const comment_id = this.props.match.params.comment_id;
+        const comment_id = this.props.match.params.comment;
         const post_id = this.props.match.params.post_id;
+        console.log('comment_id', comment_id, 'post_id', post_id, this.props.comments);
         if(this.props.comments[post_id]){
             let comment = this.props.comments[post_id].filter(function (comment) {
                 if (comment.id==comment_id) { return comment }
@@ -68,11 +57,6 @@ class CommentEditComponent extends Component {
                 comment = comment[0]
             }
             this.setState({comment: comment});
-            /*
-            else{
-                this.props.history.push('/');
-            }
-            */
         }
     }
 

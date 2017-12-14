@@ -4,16 +4,12 @@ import CategoriesList from './components/CategoriesList';
 import './App.css';
 import { Route, withRouter } from 'react-router-dom';
 import HomeComponent from './components/HomeComponent';
-import PostsList from './components/PostsList';
 import PostComponent from './components/PostComponent';
 import CategoryComponent from './components/CategoryComponent';
 import PostEditComponent from './components/PostEditComponent';
 import CommentEditComponent from './components/CommentEditComponent';
-import store from './store';
 import { connect } from 'react-redux';
-import { Provider } from 'react-redux';
 import * as ClientAPI from './utils/APIClient';
-import { categoriesActions } from './store/categories/index';
 import { postActions } from './store/posts/index';
 import * as categoriesActionTypes from './store/categories/actionTypes';
 import * as postsActionTypes from './store/posts/actionTypes';
@@ -43,7 +39,6 @@ class App extends Component {
                     <Route path={"/:category/:post_id/edit/"} exact component={PostEditComponent}/>
                     <Route path={"/:category/:post_id/:comment/edit/"} exact component={CommentEditComponent}/>
                 </Dashboard>
-
             </div>
         )
     }

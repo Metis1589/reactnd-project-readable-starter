@@ -13,6 +13,11 @@ class PostsList extends Component {
         this.setState({orderBy:orderByField});
     }
 
+    handleAddPostClick(link, e) {
+        e.preventDefault();
+        this.props.history.push(link);
+    }
+
     render() {
         const posts = this.props.posts;
         const history = this.props.history;
@@ -20,6 +25,10 @@ class PostsList extends Component {
         posts.sort(sortBy('-' + this.state.orderBy));
         return (
             <div>
+                <button type="button" className="btn btn-primary btn-sm pull-right"
+                        onClick={this.handleAddPostClick.bind(this, `/post-create`)}>
+                    <i className="fa fa-plus"/> Create new post
+                </button>
                 <br />
                 <div style={{ padding: '5px'}}>
                     Show posts ordered by:
@@ -39,19 +48,3 @@ class PostsList extends Component {
 }
 
 export default PostsList;
-
-/*
- <div className="box-footer box-comments">
- <div className="box-comment">
- <img className="img-circle img-sm" src="https://adminlte.io/themes/AdminLTE/dist/img/user1-128x128.jpg" alt="User Image" />
- <div className="comment-text">
- <span className="username">
- Luna Stark
- <span className="text-muted pull-right">8:03 PM Today</span>
- </span>
- It is a long established fact that a reader will be distracted
- by the readable content of a page when looking at its layout.
- </div>
- </div>
- </div>
- */

@@ -112,7 +112,7 @@ class Post extends Component {
                                      <span className="text-muted pull-right">
                                          <div style={{textAlign: 'right'}}>
                                              <button type="button" className="btn btn-box-tool"
-                                                     onClick={this.handleEditClick.bind(this, `/${post.category}/${post.id}/${post.id}/edit`)}>
+                                                     onClick={this.handleEditClick.bind(this, `/${post.category}/${post.id}/${comment.id}/edit`)}>
                                                  <i className="fa fa-edit"/>
                                              </button>
                                              <button type="button" className="btn btn-box-tool"

@@ -1,12 +1,8 @@
 import React, { Component } from 'react';
-import { Route, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as ClientAPI from '../utils/APIClient';
-import * as postsActionTypes from '../store/posts/actionTypes';
 import * as postsActions from '../store/posts/actions';
-import { Link } from 'react-router-dom';
-import { isEqual } from 'lodash';
-import { uuid } from 'uuid';
+import uuid from 'uuid';
 
 class PostEditComponent extends Component {
 
@@ -23,7 +19,7 @@ class PostEditComponent extends Component {
             ClientAPI.updatePost(post_id, post)
                 .then(() => {
                     props.updatePost(post);
-                    props.history.push('/');
+                    props.history.goBack();
                 });
         } else {
             post.timestamp = Date.now();
@@ -31,7 +27,7 @@ class PostEditComponent extends Component {
             ClientAPI.createPost(post)
                 .then((post) => {
                     props.createPost(post);
-                    props.history.push('/');
+                    props.history.goBack();
                 });
         }
     }
@@ -40,14 +36,6 @@ class PostEditComponent extends Component {
         const post = Object.assign({}, this.state.post, {[field]: e.target.value});
         this.setState(Object.assign({}, this.state, {post}));
     }
-
-    /*
-    componentWillReceiveProps(nextProps) {
-        if (!isEqual(nextProps.post, this.state.post)) {
-            this.setState({...this.state, post: nextProps.post});
-        }
-    }
-    */
 
     componentDidMount() {
         let props = this.props;
