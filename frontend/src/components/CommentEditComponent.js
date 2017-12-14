@@ -6,6 +6,7 @@ import * as commentsActionTypes from '../store/comments/actionTypes';
 import * as commentsActions from '../store/comments/actions';
 import { Link } from 'react-router-dom';
 import { isEqual } from 'lodash';
+import uuid from 'uuid';
 
 class CommentEditComponent extends Component {
 
@@ -30,15 +31,15 @@ class CommentEditComponent extends Component {
             ClientAPI.updateComment(comment.id, comment)
                 .then(() => {
                     props.updateComment(comment);
-                    //props.history.push('/');
+                    props.history.push('/');
                 });
         } else {
             comment.timestamp = Date.now();
-            comment.id = Date.now();
+            comment.id = uuid();
             ClientAPI.createComment(comment)
                 .then((comment) => {
                     props.createComment(comment);
-                    // props.history.push('/');
+                    props.history.push('/');
                 });
         }
     }
@@ -78,8 +79,13 @@ class CommentEditComponent extends Component {
     render() {
         const { comment } = this.state;
         return (
-            <div className="row">
-                <h1>Comment {comment.id ? 'edit' : 'add' }</h1>
+            <div className="col-xs-12">
+                <section className="content-header">
+                    <h1>
+                        Comment {comment.id ? 'edit' : 'add' }
+                    </h1>
+                </section>
+                <br />
                 {comment && (
                     <div>
                         <div>

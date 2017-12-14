@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import * as ClientAPI from '../utils/APIClient';
 import * as commentsActionTypes from '../store/comments/actionTypes';
 import { Link } from 'react-router-dom';
-import CommentsList from './CommentsList'
+import CommentsList from './CommentsList';
+import Post from './Post';
 
 class PostComponent extends Component {
 
@@ -19,6 +20,7 @@ class PostComponent extends Component {
     }
 
     render() {
+        const history = this.props.history;
         const post_id = this.props.match.params.post_id;
         let post = this.props.posts.list.filter(function (post) {
             if (post.id==post_id) { return post }
@@ -31,38 +33,16 @@ class PostComponent extends Component {
         }
         const comments = this.props.comments[post_id] ? this.props.comments[post_id] : [];
         return (
-            <div className="row">
+            <div className="col-xs-12">
+                <section className="content-header">
+                    <h1>
+                        {post.title}
+                        <small>Posts details</small>
+                    </h1>
+                </section>
+                <br />
                 {post && (
-                    <div>
-                        <h3>Post details</h3>
-                        <div>
-                            <label>Title: {post.title} </label>
-                        </div>
-                        <div>
-                            <label>Body: {post.body} </label>
-                        </div>
-                        <div>
-                            <label>Author: {post.author} </label>
-                        </div>
-                        <div>
-                            <label>Post date: {post.timestamp} </label>
-                        </div>
-                        <div>
-                            <label>VoteScore: {post.voteScore} </label>
-                        </div>
-                        <div>
-                            <Link to={`/${post.category}/${post.id}/edit`}>Edit</Link> &nbsp;
-                            <a>Delete</a>
-                        </div>
-                        <div>
-                            <h1>Comments</h1>
-                            <div>
-                                <CommentsList comments={comments} post={post}/>
-                                <br />
-                                <Link to={`/post/${post.id}/add-comment`}>Add comment</Link>
-                            </div>
-                        </div>
-                    </div>
+                    <Post post={post} history={history} comments={comments}/>
                 )}
             </div>
         );

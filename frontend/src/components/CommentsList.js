@@ -73,25 +73,3 @@ function mapDispatchToProps (dispatch) {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CommentsList);
-
-/*
- "id": "894tuq4ut84ut8v4t8wun89g",
- "parentId": "8xf0y6ziyjabvozdd253nd",
- "timestamp": 1468166872634,
- "body": "Hi there! I am a COMMENT.",
- "author": "thingtwo",
- "voteScore": 6,
- */
-
-/*
- <p>{comment.body}</p>
- <p>{comment.author}</p>
- <p>{comment.timestamp}</p>
- <p>{comment.voteScore} <button onClick={this.handleVote.bind(this, post.id, 'upVote')}>UpVote</button>&nbsp;
- <button onClick={this.handleVote.bind(this, post.id, 'downVote')}>DownVote</button></p>
- <p>Comments: {post.commentCount}</p>
- <p>
- <Link to={`/${post.category}/${comment.id}/edit`}>Edit</Link> &nbsp;
- <a href="#" onClick={this.handleClick.bind(this, comment.id)}>Delete</a>
- </p>
- */

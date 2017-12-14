@@ -1,25 +1,31 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Sidebar } from 'react-adminlte-dash';
+import { HashRouter as Router, Route } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 class CategoriesList extends Component {
+    handleNavigationClick(link, e) {
+        e.preventDefault();
+        this.props.history.push(link);
+    }
 
     render() {
-        const categories = this.props.categories;
+        const categories = this.props.categories.list;
         return (
-            <div className="jumbotron">
-                <p>
-                    CategoriesList
-                </p>
-                <ol className="books-grid">
-                    {categories.map((category) => (
-                        <li key={category.path}>
-                            <Link to={'/'+category.path}>{category.name}</Link>
-                        </li>
-                    ))}
-                </ol>
-            </div>
+            <Sidebar.Menu header="CATEGORIES" key="home">
+                <Sidebar.Menu.Item icon={{className:'fa fa-navicon'}} title="Home" onClick={this.handleNavigationClick.bind(this, '/')}/>
+                {categories.map((category) => (
+                    <Sidebar.Menu.Item icon={{className:'fa fa-navicon'}} title={category.name} key={category.name} onClick={this.handleNavigationClick.bind(this, '/'+category.path)}/>
+                ))}
+            </Sidebar.Menu>
         );
     }
 }
 
-export default CategoriesList;
+function mapStateToProps(state, ownProps) {
+    return {
+        categories: state.categories
+    }
+}
+
+export default connect(mapStateToProps)(CategoriesList);

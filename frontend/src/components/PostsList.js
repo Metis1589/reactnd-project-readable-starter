@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
-import * as ClientAPI from '../utils/APIClient';
-import * as postsActions from '../store/posts/actions';
+import Post from './Post';
 import sortBy from 'sort-by';
 
 class PostsList extends Component {
@@ -16,73 +13,45 @@ class PostsList extends Component {
         this.setState({orderBy:orderByField});
     }
 
-    handleClick(post_id, e) {
-        e.preventDefault();
-        const props = this.props;
-        if (post_id) {
-            ClientAPI.deletePost(post_id)
-                .then(() => {
-                    props.deletePost(post_id);
-                });
-        }
-    }
-
-    handleVote(post_id, voteOption, e) {
-        e.preventDefault();
-        const props = this.props;
-        if (post_id) {
-            ClientAPI.votePost(post_id, voteOption)
-                .then((post) => {
-                    props.votePost(post);
-                });
-        }
-    }
-
     render() {
         const posts = this.props.posts;
+        const history = this.props.history;
+        const orderBy = this.state.orderBy;
         posts.sort(sortBy('-' + this.state.orderBy));
         return (
-            <div className="jumbotron">
-                <div>
-                    <h5>Order by:</h5>
-                    <a href="" onClick={this.handleOrderByClick.bind(this, 'timestamp')}>datetime</a> &nbsp;
-                    <a href="" onClick={this.handleOrderByClick.bind(this, 'voteScore')}>popularity</a>
+            <div>
+                <br />
+                <div style={{ padding: '5px'}}>
+                    Show posts ordered by:
+                    <a href="" style={{fontFamily: orderBy=='timestamp' ? 'bold' : 'normal'}} onClick={this.handleOrderByClick.bind(this, 'timestamp')}> &nbsp;
+                        <i className="fa fa-clock-o"/> date
+                    </a>
+                    <a href="" style={{fontFamily: orderBy=='voteScore' ? 'bold' : 'normal'}} onClick={this.handleOrderByClick.bind(this, 'voteScore')}> &nbsp;
+                        <i className="fa fa-thumbs-up"/> popularity
+                    </a>
                 </div>
-                <p>Posts list</p>
-                <ol className="books-grid">
-                    {posts.map((post) => (
-                        <li key={post.id}>
-                            <Link to={`/${post.category}/${post.id}`}>{post.title}</Link>
-                            <br />
-                            <p>{post.body}</p>
-                            <p>{post.author}</p>
-                            <p>{post.timestamp}</p>
-                            <p>{post.voteScore} <button onClick={this.handleVote.bind(this, post.id, 'upVote')}>UpVote</button>&nbsp;
-                                <button onClick={this.handleVote.bind(this, post.id, 'downVote')}>DownVote</button></p>
-                            <p>Comments: {post.commentCount}</p>
-                            <p>
-                                <Link to={`/${post.category}/${post.id}/edit`}>Edit</Link> &nbsp;
-                                <a href="#" onClick={this.handleClick.bind(this, post.id)}>Delete</a>
-                            </p>
-                        </li>
-                    ))}
-                </ol>
+                {posts.map((post) => (
+                    <Post post={post} history={history} key={post.id}/>
+                ))}
             </div>
         );
     }
 }
 
-function mapStateToProps(state, ownProps) {
-    return {
-        posts: ownProps.posts
-    }
-}
+export default PostsList;
 
-function mapDispatchToProps (dispatch) {
-    return {
-        votePost: (data) => dispatch(postsActions.votePost(data)),
-        deletePost: (data) => dispatch(postsActions.deletePost(data))
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(PostsList);
+/*
+ <div className="box-footer box-comments">
+ <div className="box-comment">
+ <img className="img-circle img-sm" src="https://adminlte.io/themes/AdminLTE/dist/img/user1-128x128.jpg" alt="User Image" />
+ <div className="comment-text">
+ <span className="username">
+ Luna Stark
+ <span className="text-muted pull-right">8:03 PM Today</span>
+ </span>
+ It is a long established fact that a reader will be distracted
+ by the readable content of a page when looking at its layout.
+ </div>
+ </div>
+ </div>
+ */

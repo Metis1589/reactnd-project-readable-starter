@@ -6,6 +6,7 @@ import * as postsActionTypes from '../store/posts/actionTypes';
 import * as postsActions from '../store/posts/actions';
 import { Link } from 'react-router-dom';
 import { isEqual } from 'lodash';
+import { uuid } from 'uuid';
 
 class PostEditComponent extends Component {
 
@@ -26,7 +27,7 @@ class PostEditComponent extends Component {
                 });
         } else {
             post.timestamp = Date.now();
-            post.id = Date.now();
+            post.id = uuid();
             ClientAPI.createPost(post)
                 .then((post) => {
                     props.createPost(post);
@@ -80,8 +81,13 @@ class PostEditComponent extends Component {
         const { post_id, post } = this.state;
         const categories = this.props.categories.list;
         return (
-            <div className="row">
-                <h1>Post {post_id ? 'edit' : 'create' }</h1>
+            <div className="col-xs-12">
+                <section class="content-header">
+                    <h1>
+                        Post {post_id ? 'edit' : 'create' }
+                    </h1>
+                </section>
+                <br />
                 {post && (
                     <div>
                         <div>
@@ -120,6 +126,7 @@ class PostEditComponent extends Component {
                                     <label className="label-control">Category</label>
                                       <select
                                           label="Select category"
+                                          className="form-control"
                                           value={post.category}
                                           onChange={this.handleChange.bind(this, 'category')}
                                       >
