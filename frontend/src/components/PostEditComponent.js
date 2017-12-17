@@ -70,7 +70,7 @@ class PostEditComponent extends Component {
         const categories = this.props.categories.list;
         return (
             <div className="col-xs-12">
-                <section class="content-header">
+                <section className="content-header">
                     <h1>
                         Post {post_id ? 'edit' : 'create' }
                     </h1>
@@ -86,6 +86,7 @@ class PostEditComponent extends Component {
                                     <input
                                         type="text"
                                         className="form-control"
+                                        required
                                         value={post.title}
                                         onChange={this.handleChange.bind(this, 'title')}
                                     />
@@ -96,6 +97,7 @@ class PostEditComponent extends Component {
                                     <input
                                         type="text"
                                         className="form-control"
+                                        required
                                         value={post.author}
                                         onChange={this.handleChange.bind(this, 'author')}
                                     />
@@ -106,6 +108,7 @@ class PostEditComponent extends Component {
                                       <textarea
                                           className="form-control"
                                           value={post.body}
+                                          required
                                           onChange={this.handleChange.bind(this, 'body')}
                                       />
                                 </div>
@@ -116,6 +119,7 @@ class PostEditComponent extends Component {
                                           label="Select category"
                                           className="form-control"
                                           value={post.category}
+                                          required
                                           onChange={this.handleChange.bind(this, 'category')}
                                       >
                                           <option>Select category</option>

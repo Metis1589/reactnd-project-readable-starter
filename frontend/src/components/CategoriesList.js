@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Sidebar } from 'react-adminlte-dash';
-import { HashRouter as Router, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 class CategoriesList extends Component {
@@ -15,7 +14,7 @@ class CategoriesList extends Component {
             <Sidebar.Menu header="CATEGORIES" key="home">
                 <Sidebar.Menu.Item icon={{className:'fa fa-navicon'}} title="Home" onClick={this.handleNavigationClick.bind(this, '/')}/>
                 {categories.map((category) => (
-                    <Sidebar.Menu.Item icon={{className:'fa fa-navicon'}} title={category.name} key={category.name} onClick={this.handleNavigationClick.bind(this, '/'+category.path)}/>
+                    <Sidebar.Menu.Item icon={{className:'fa fa-navicon'}} title={category.name} key={category.path} onClick={this.handleNavigationClick.bind(this, '/'+category.path)}/>
                 ))}
             </Sidebar.Menu>
         );

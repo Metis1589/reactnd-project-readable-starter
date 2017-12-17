@@ -9,19 +9,27 @@ class CategoryComponent extends Component {
 
     render() {
         const history = this.props.history;
-        const category = this.props.match.params.category;
+        const categoryToken = this.props.match.params.category;
         const posts = this.props.posts.list.filter(function (post) {
-            if (post.category==category) {
+            if (post.category==categoryToken) {
                 return post
             }
         });
+        let selectedCategory = this.props.categories.list.filter(function (category) {
+            if (category.path==categoryToken) {
+                return category
+            }
+        });
+        if(selectedCategory.length > 0){
+            selectedCategory = selectedCategory[0]['name'];
+        }
         return (
             <div>
-                {category!='post-create' && category!='add-comment' && (
+                {categoryToken!='post-create' && categoryToken!='add-comment' && (
                     <div className="col-xs-12">
                         <section className="content-header">
                             <h1>
-                                Category posts list
+                                Category "{selectedCategory}" posts
                             </h1>
                         </section>
                         <PostsList posts={posts} history={history}/>

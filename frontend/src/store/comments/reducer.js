@@ -12,7 +12,7 @@ export default (state = initialState, action) => {
             }
         case actionTypes.CREATE_COMMENT:
             let updatedState = state[action.comment.parentId];
-            if(typeof(updatedState) == 'undefined'){
+            if(typeof(updatedState) === 'undefined'){
                 updatedState = [];
             }
             updatedState.push(action.comment);

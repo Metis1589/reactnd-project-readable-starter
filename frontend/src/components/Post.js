@@ -61,13 +61,13 @@ class Post extends Component {
 
     render() {
         const post = this.props.post;
+        const detailView = this.props.detailView;
         const comments = typeof(this.props.comments) !== 'undefined' ? this.props.comments : [];
         return (
             <div className="box box-widget">
                 <div className="box-header with-border">
                     <div className="user-block">
-                        <img className="img-circle" src="https://adminlte.io/themes/AdminLTE/dist/img/user1-128x128.jpg"
-                             alt="User Image"/>
+                        <img className="img-circle" src="/user_avatar.png" alt="User Image"/>
                         <span className="username">{post.author}</span>
                         <span className="description">Shared publicly - {timeConvertor(post.timestamp)}</span>
                     </div>
@@ -82,12 +82,14 @@ class Post extends Component {
                     </div>
                 </div>
                 <div className="box-body">
-                    <span className="username"><Link to={`/${post.category}/${post.id}`}>{post.title}</Link></span>
+                    <span className="username">
+                        {detailView && (<b>{post.title}</b>)}
+                        {!detailView && (<Link to={`/${post.category}/${post.id}`}>{post.title}</Link>)}
+                    </span>
                     <p>{post.body}</p>
-                    <Link className="btn btn-primary btn-xs" to={`/post/${post.id}/add-comment`}>
+                    {detailView && (<Link style={{ marginRight: '6px'}} className="btn btn-primary btn-xs" to={`/post/${post.id}/add-comment`}>
                         <i className="fa fa-comment"/> Add comment to post
-                    </Link>
-                    &nbsp;&nbsp;
+                    </Link> )}
                     <button type="button" className="btn btn-default btn-xs"
                             onClick={this.handleVote.bind(this, post.id, 'upVote')}>
                         <i className="fa fa-thumbs-o-up"/> UpVote
@@ -99,11 +101,10 @@ class Post extends Component {
                     </button>
                     <span className="pull-right text-muted">{post.voteScore} vote score - {post.commentCount} comments</span>
                 </div>
-                {comments.map((comment) => (
+                {detailView && comments.length>0 && comments.map((comment) => (
                     <div className="box-footer box-comments" key={comment.id}>
                         <div>
-                            <img className="img-circle img-sm"
-                                 src="https://adminlte.io/themes/AdminLTE/dist/img/user1-128x128.jpg" alt="User Image"/>
+                            <img className="img-circle img-sm" src="/user_avatar.png" alt="User Image"/>
                             <div className="comment-text">
                                 <span className="username">{comment.author}&nbsp;
                                      <span style={{fontWeight: 'normal'}}>
@@ -138,6 +139,13 @@ class Post extends Component {
                         </div>
                     </div>
                 ))}
+                {detailView && comments.length==0 && (
+                    <div className="box-footer box-comments">
+                        <div className="box-header with-border">
+                            <i>No comments were published to this post. You can add <Link to={`/post/${post.id}/add-comment`}>new one</Link>.</i>
+                        </div>
+                    </div>
+                )}
             </div>
         );
     }
@@ -145,6 +153,7 @@ class Post extends Component {
 
 function mapStateToProps(state, ownProps) {
     return {
+        detailView: ownProps.detailView,
         post: ownProps.post,
         comemnts: ownProps.comments
     }

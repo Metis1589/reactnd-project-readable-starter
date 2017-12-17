@@ -41,7 +41,7 @@ class PostComponent extends Component {
                 </section>
                 <br />
                 {post && (
-                    <Post post={post} history={history} comments={comments}/>
+                    <Post post={post} history={history} comments={comments} detailView={true} />
                 )}
             </div>
         );

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Dashboard, Header, Sidebar } from 'react-adminlte-dash';
+import { Dashboard } from 'react-adminlte-dash';
 import CategoriesList from './components/CategoriesList';
 import './App.css';
 import { Route, withRouter } from 'react-router-dom';
@@ -10,7 +10,6 @@ import PostEditComponent from './components/PostEditComponent';
 import CommentEditComponent from './components/CommentEditComponent';
 import { connect } from 'react-redux';
 import * as ClientAPI from './utils/APIClient';
-import { postActions } from './store/posts/index';
 import * as categoriesActionTypes from './store/categories/actionTypes';
 import * as postsActionTypes from './store/posts/actionTypes';
 

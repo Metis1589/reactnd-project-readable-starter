@@ -11,7 +11,7 @@ export default (state = initialState, action) => {
             const categories  = action.payload
             return {
                 ...state,
-                ['list']: categories,
+                ['list'] : categories,
             }
         default:
             return state;

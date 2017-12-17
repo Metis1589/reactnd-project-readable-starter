@@ -35,8 +35,6 @@ class CommentEditComponent extends Component {
             ClientAPI.updateComment(comment.id, comment)
                 .then(() => {
                     props.updateComment(comment);
-                    post.commentCount++;
-                    props.updatePost(post);
                     props.history.goBack();
                 });
         } else {
@@ -58,10 +56,10 @@ class CommentEditComponent extends Component {
     }
 
     componentDidMount() {
-        const comment_id = this.props.match.params.comment;
-        const post_id = this.props.match.params.post_id;
         const props = this.props;
-        if(typeof(this.props.comments[post_id])==='undefined'){
+        const comment_id = props.match.params.comment;
+        const post_id = props.match.params.post_id;
+        if(typeof(props.comments[post_id])==='undefined'){
             ClientAPI.getCommentsList(post_id)
                 .then((comments) => {
                     props.fetchComments(comments, post_id);
