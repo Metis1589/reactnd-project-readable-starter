@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as ClientAPI from '../utils/APIClient';
+import * as postsActions from '../store/posts/actions';
 import * as commentsActions from '../store/comments/actions';
+import * as commentsActionTypes from '../store/comments/actionTypes';
 import uuid from 'uuid';
 
 class CommentEditComponent extends Component {
@@ -23,10 +25,18 @@ class CommentEditComponent extends Component {
         const props = this.props;
         const { comment } = this.state;
         comment.parentId = this.props.match.params.post_id;
+        let post = this.props.posts.list.filter(function (post) {
+            if (post.id==comment.parentId) { return post }
+        });
+        if(post.length > 0){
+            post = post[0]
+        }
         if (comment.id) {
             ClientAPI.updateComment(comment.id, comment)
                 .then(() => {
                     props.updateComment(comment);
+                    post.commentCount++;
+                    props.updatePost(post);
                     props.history.goBack();
                 });
         } else {
@@ -35,6 +45,8 @@ class CommentEditComponent extends Component {
             ClientAPI.createComment(comment)
                 .then((comment) => {
                     props.createComment(comment);
+                    post.commentCount++;
+                    props.updatePost(post);
                     props.history.goBack();
                 });
         }
@@ -48,16 +60,27 @@ class CommentEditComponent extends Component {
     componentDidMount() {
         const comment_id = this.props.match.params.comment;
         const post_id = this.props.match.params.post_id;
-        console.log('comment_id', comment_id, 'post_id', post_id, this.props.comments);
-        if(this.props.comments[post_id]){
-            let comment = this.props.comments[post_id].filter(function (comment) {
-                if (comment.id==comment_id) { return comment }
-            });
-            if(comment.length > 0){
-                comment = comment[0]
-            }
-            this.setState({comment: comment});
+        const props = this.props;
+        if(typeof(this.props.comments[post_id])==='undefined'){
+            ClientAPI.getCommentsList(post_id)
+                .then((comments) => {
+                    props.fetchComments(comments, post_id);
+                    this.getParticularCommentFromList(comments, post_id, comment_id)
+                });
         }
+        else{
+            this.getParticularCommentFromList(props.comments[post_id], post_id, comment_id)
+        }
+    }
+
+    getParticularCommentFromList(comments, post_id, comment_id){
+        let comment = comments.filter(function (comment) {
+            if (comment.id==comment_id) { return comment }
+        });
+        if(comment.length > 0){
+            comment = comment[0]
+        }
+        this.setState({comment: comment});
     }
 
     render() {
@@ -109,14 +132,17 @@ class CommentEditComponent extends Component {
 
 function mapStateToProps(state, ownProps) {
     return {
+        posts: state.posts,
         comments: state.comments
     }
 }
 
 function mapDispatchToProps (dispatch) {
     return {
+        fetchComments: (data) => dispatch(commentsActions.fetchComments(data)),
         createComment: (data) => dispatch(commentsActions.createComment(data)),
-        updateComment: (data) => dispatch(commentsActions.updateComment(data))
+        updateComment: (data) => dispatch(commentsActions.updateComment(data)),
+        updatePost: (data) => dispatch(postsActions.updatePost(data))
     }
 }
 

@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import * as ClientAPI from '../utils/APIClient';
 import * as commentsActionTypes from '../store/comments/actionTypes';
 import { Link } from 'react-router-dom';
-import CommentsList from './CommentsList';
 import Post from './Post';
 
 class PostComponent extends Component {

@@ -1,7 +1,7 @@
 import * as actionTypes from './actionTypes';
 
-export function fetchComments(comments) {
-    return {type: actionTypes.FETCH_COMMENTS, comments};
+export function fetchComments(comments, post_id) {
+    return {type: actionTypes.FETCH_COMMENTS, post_id, comments};
 }
 
 export function createComment(comment) {

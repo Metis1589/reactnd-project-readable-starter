@@ -8,11 +8,6 @@ import * as commentsActions from '../store/comments/actions';
 
 class Post extends Component {
 
-    handleEditClick(link, e) {
-        e.preventDefault();
-        this.props.history.push(link);
-    }
-
     handleClick(post_id, e) {
         e.preventDefault();
         const props = this.props;
@@ -26,12 +21,19 @@ class Post extends Component {
 
     handleCommentDeleteClick(comment_id, e) {
         e.preventDefault();
-        const props = this.props;
+        let props = this.props;
+        let post = props.post;
+        post.commentCount--;
         if (comment_id) {
             ClientAPI.deleteComment(comment_id)
                 .then((comment) => {
                     props.deleteComment(comment);
-                });
+                    props.updatePost(post);
+                })
+                .catch((err) => {
+                    console.error("error: " + err);
+                    post.commentCount++;
+                })
         }
     }
 
@@ -70,10 +72,9 @@ class Post extends Component {
                         <span className="description">Shared publicly - {timeConvertor(post.timestamp)}</span>
                     </div>
                     <div className="box-tools">
-                        <button type="button" className="btn btn-box-tool"
-                                onClick={this.handleEditClick.bind(this, `/${post.category}/${post.id}/edit`)}>
+                        <Link className="btn btn-box-tool" to={`/${post.category}/${post.id}/edit`}>
                             <i className="fa fa-edit"/>
-                        </button>
+                        </Link>
                         <button type="button" className="btn btn-box-tool"
                                 onClick={this.handleClick.bind(this, post.id)}>
                             <i className="fa fa-remove"/>
@@ -83,10 +84,9 @@ class Post extends Component {
                 <div className="box-body">
                     <span className="username"><Link to={`/${post.category}/${post.id}`}>{post.title}</Link></span>
                     <p>{post.body}</p>
-                    <button type="button" className="btn btn-default btn-xs"
-                            onClick={this.handleEditClick.bind(this, `/post/${post.id}/add-comment`)}>
-                        <i className="fa fa-comment"/> Comment post
-                    </button>
+                    <Link className="btn btn-primary btn-xs" to={`/post/${post.id}/add-comment`}>
+                        <i className="fa fa-comment"/> Add comment to post
+                    </Link>
                     &nbsp;&nbsp;
                     <button type="button" className="btn btn-default btn-xs"
                             onClick={this.handleVote.bind(this, post.id, 'upVote')}>
@@ -111,10 +111,9 @@ class Post extends Component {
                                      </span>
                                      <span className="text-muted pull-right">
                                          <div style={{textAlign: 'right'}}>
-                                             <button type="button" className="btn btn-box-tool"
-                                                     onClick={this.handleEditClick.bind(this, `/${post.category}/${post.id}/${comment.id}/edit`)}>
+                                             <Link className="btn btn-box-tool" to={`/${post.category}/${post.id}/${comment.id}/edit`}>
                                                  <i className="fa fa-edit"/>
-                                             </button>
+                                             </Link>
                                              <button type="button" className="btn btn-box-tool"
                                                      onClick={this.handleCommentDeleteClick.bind(this, comment.id)}>
                                                  <i className="fa fa-remove"/>
@@ -154,6 +153,7 @@ function mapStateToProps(state, ownProps) {
 function mapDispatchToProps(dispatch) {
     return {
         votePost: (data) => dispatch(postsActions.votePost(data)),
+        updatePost: (data) => dispatch(postsActions.updatePost(data)),
         deletePost: (data) => dispatch(postsActions.deletePost(data)),
         voteComment: (data) => dispatch(commentsActions.voteComment(data)),
         deleteComment: (data) => dispatch(commentsActions.deleteComment(data))
