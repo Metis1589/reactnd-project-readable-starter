@@ -1,8 +1,14 @@
 import React, { Component } from 'react';
 import { Sidebar } from 'react-adminlte-dash';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 class CategoriesList extends Component {
+
+    static propTypes = {
+        categories: PropTypes.array.isRequired
+    }
+
     handleNavigationClick(link, e) {
         e.preventDefault();
         this.props.history.push(link);

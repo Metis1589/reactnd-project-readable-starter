@@ -1,12 +1,18 @@
 import React, { Component } from 'react';
-import timeConvertor from '../utils/timeConvertor';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import * as ClientAPI from '../utils/APIClient';
 import * as postsActions from '../store/posts/actions';
 import * as commentsActions from '../store/comments/actions';
+import timeConvertor from '../utils/timeConvertor';
 
 class Post extends Component {
+
+    static propTypes = {
+        post: PropTypes.array.isRequired,
+        detailView: PropTypes.bool.isRequired
+    }
 
     handleClick(post_id, e) {
         e.preventDefault();
@@ -155,7 +161,7 @@ function mapStateToProps(state, ownProps) {
     return {
         detailView: ownProps.detailView,
         post: ownProps.post,
-        comemnts: ownProps.comments
+        comments: ownProps.comments
     }
 }
 

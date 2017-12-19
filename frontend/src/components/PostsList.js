@@ -2,8 +2,13 @@ import React, { Component } from 'react';
 import Post from './Post';
 import { Link } from 'react-router-dom';
 import sortBy from 'sort-by';
+import PropTypes from 'prop-types';
 
 class PostsList extends Component {
+
+    static propTypes = {
+        posts: PropTypes.array.isRequired
+    }
 
     state = {
         orderBy: 'timestamp'
